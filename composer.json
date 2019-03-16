@@ -1,0 +1,43 @@
+{
+    "name": "mijingo/learning-pathways",
+    "description": "Tracks the learning pathways of students.",
+    "type": "craft-plugin",
+    "version": "0.0.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "learning pathways"
+    ],
+    "support": {
+        "docs": "???",
+        "issues": "???"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Irelan",
+            "homepage": "https://craftquest.io"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "mijingo\\learningpathways\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Learning Pathways",
+        "handle": "learning-pathways",
+        "hasCpSettings": false,
+        "hasCpSection": false,
+        "changelogUrl": "???",
+        "components": {
+            "learningPathwaysService": "mijingo\\learningpathways\\services\\LearningPathwaysService"
+        },
+        "class": "mijingo\\learningpathways\\LearningPathways"
+    }
+}
