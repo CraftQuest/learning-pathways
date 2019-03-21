@@ -46,7 +46,7 @@ class DefaultController extends Controller
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    protected $allowAnonymous = ['index', 'do-something'];
+    protected $allowAnonymous = ['index', 'save', 'delete'];
 
     // Public Methods
     // =========================================================================
@@ -64,16 +64,33 @@ class DefaultController extends Controller
         return $result;
     }
 
-    /**
-     * Handle a request going to our plugin's actionDoSomething URL,
-     * e.g.: actions/learning-pathways/default/do-something
-     *
-     * @return mixed
-     */
-    public function actionDoSomething()
-    {
-        $result = 'Welcome to the DefaultController actionDoSomething() method';
+    public function actionSave() {
+        // save the pathway to the current user
 
-        return $result;
+        // get current user data
+        $currentUserId = craft::$app->user->getId();
+        // get data
+        $params =  craft::$app->request->getBodyParams();
+        $saveData = array(
+            'userId' => $currentUserId,
+            'entryId' => $params['entryId'],
+            'status' => 0,
+            'siteId' => $params['siteId'],
+        );
+
+        $isEnrolled = LearningPathways::$plugin->learningPathwaysService->isEnrolled($saveData);
+
+        if (!$isEnrolled)
+        {
+            $enroll =  LearningPathways::$plugin->learningPathwaysService->saveEnrollment($saveData);
+        }
+
+        return;
     }
+
+    public function actionDelete() {
+        // remove the specified pathway for current user
+    }
+
+
 }

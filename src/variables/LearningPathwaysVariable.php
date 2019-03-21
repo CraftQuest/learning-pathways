@@ -53,4 +53,23 @@ class LearningPathwaysVariable
         }
         return $result;
     }
+
+    public function isEnrolled($userData)
+    {
+        $result = LearningPathways::$plugin->learningPathwaysService->isEnrolled($userData);
+        return $result;
+    }
+    
+    public function hasEnrollment()
+    {
+        $result = LearningPathways::$plugin->learningPathwaysService->hasEnrollment();
+        return $result;
+    }
+
+    public function getUserPathways()
+    {
+        $result = LearningPathways::$plugin->learningPathwaysService->getUserPathways();
+        return $result;
+    }
+
 }
