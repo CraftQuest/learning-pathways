@@ -151,11 +151,13 @@ class LearningPathwaysService extends Component
 
         $allVideos = array_merge($playedCourseVideos, $pathwayVideos);
 
-        $completedCount = array_count_values(array_column($allVideos, 'completed'))[1];
-
-        if ($completedCount == count($allVideos)) {
-            return true;
+        if (count($playedCourseVideos) > 0) {
+            $completedCount = array_count_values(array_column($allVideos, 'completed'))[1];
+            if ($completedCount == count($allVideos)) {
+                return true;
+            }
         }
+
         return false;
     }
 
