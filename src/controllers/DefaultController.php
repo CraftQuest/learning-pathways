@@ -89,7 +89,19 @@ class DefaultController extends Controller
     }
 
     public function actionDelete() {
-        // remove the specified pathway for current user
+        // get current user data
+        $currentUserId = craft::$app->user->getId();
+        // get data
+        $params =  craft::$app->request->getBodyParams();
+        $saveData = array(
+            'userId' => $currentUserId,
+            'entryId' => $params['entryId'],
+            'siteId' => $params['siteId'],
+        );
+
+        $unenroll =  LearningPathways::$plugin->learningPathwaysService->removeEnrollment($saveData);
+
+        return;
     }
 
 

@@ -15,6 +15,8 @@ use mijingo\learningpathways\LearningPathways;
 use Craft;
 use craft\base\Component;
 use craft\db\Query;
+use craft\elements\Entry;
+use craft\elements\MatrixBlock;
 
 /**
  * LearningPathwaysService Service
@@ -35,17 +37,11 @@ class LearningPathwaysService extends Component
     // =========================================================================
 
     /**
-     * This function can literally be anything you want, and you can have as many service
-     * functions as you want
-     *
-     * From any other plugin file, call it like this:
-     *
-     *     LearningPathways::$plugin->learningPathwaysService->exampleService()
-     *
-     * @return mixed
+     * @param $data
+     * @return bool
      */
-
-    public function isEnrolled($data) {
+    public function isEnrolled($data)
+    {
 
         // check if student is already enrolled in this pathway
         $count = (new Query())
@@ -60,7 +56,11 @@ class LearningPathwaysService extends Component
         return false;
     }
 
-    public function hasEnrollment() {
+    /**
+     * @return bool
+     */
+    public function hasEnrollment()
+    {
         // check if the student is enrolled in at least one pathway
         $count = (new Query())
             ->select(['userId', 'status'])
@@ -74,6 +74,9 @@ class LearningPathwaysService extends Component
     }
 
 
+    /**
+     * @param $data
+     */
     public function saveEnrollment($data)
     {
         $result = \Craft::$app->db->createCommand()
@@ -83,6 +86,18 @@ class LearningPathwaysService extends Component
         return;
     }
 
+    public function removeEnrollment($data)
+    {
+        $result = \Craft::$app->db->createCommand()
+            ->delete('{{%learningpathways_learningpathwaysrecord}}', $data)
+            ->execute();
+
+        return;
+    }
+
+    /**
+     * @return array
+     */
     public function getUserPathways()
     {
         // returns the incomplete pathways this user is enrolled in
@@ -93,5 +108,98 @@ class LearningPathwaysService extends Component
             ->all();
 
         return $result;
+    }
+
+    /**
+     * @param $pathwayEntryId
+     * @return bool
+     */
+    public function isPathwayComplete($pathwayEntryId)
+    {
+
+        // get the courses in the pathway via the provided Entry ID
+        $pathwayCourses = $this->_getCoursesInPathway($pathwayEntryId);
+
+        // get the videos for the courses
+        $pathwayCoursesIds = [];
+        $allCourseVideos = [];
+        $playedCourseVideos = [];
+
+        // iterate over each course and get videos
+        foreach ($pathwayCourses as $course) {
+            if ($course->sectionId == 7) {
+
+                $courseVideos = $this->_getCourseVideos($course->id);
+                $playedVideos = $this->_getPlayedCourseVideos($course->id);
+
+                // iterate over each video in a course and set to array with completed as false. Will update this later when we check if video is watched.
+                foreach ($courseVideos as $courseVideo) {
+                    $pathwayVideos[] = [
+                        'videoId' => $courseVideo->id,
+                        'completed' => 0
+                    ];
+                }
+
+                foreach ($playedVideos as $pv) {
+                    $playedCourseVideos[] = [
+                        'videoId' => $pv['rowId'],
+                        'completed' => 1
+                    ];
+                }
+            }
+        }
+
+        $allVideos = array_merge($playedCourseVideos, $pathwayVideos);
+
+        $completedCount = array_count_values(array_column($allVideos, 'completed'))[1];
+
+        if ($completedCount == count($allVideos)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $pathwayEntryId
+     * @return mixed
+     */
+    private function _getCoursesInPathway($pathwayEntryId)
+    {
+        $pathway = Entry::find()
+            ->section('learningPathways')
+            ->id($pathwayEntryId)
+            ->with('pathwayCourses')
+            ->one();
+
+        return $pathway->pathwayCourses;
+    }
+
+
+    /**
+     * @param $entryId
+     * @return array
+     */
+
+    private function _getPlayedCourseVideos($entryId)
+    {
+        $playedCourseVideos = (new Query())
+            ->select(['rowId', 'entryId', 'userId', 'siteId', 'status'])
+            ->from(['{{%playtracker_playtrackerrecord}}'])
+            ->where(['entryId' => $entryId, 'status' => 1, 'userId' => craft::$app->user->getId()])
+            ->all();
+
+        return $playedCourseVideos;
+    }
+
+    /**
+     * @param $entryId
+     * @return array|\craft\base\ElementInterface[]|MatrixBlock[]
+     */
+    private function _getCourseVideos($entryId)
+    {
+        $videos = MatrixBlock::find()
+            ->ownerId($entryId)
+            ->all();
+        return $videos;
     }
 }
