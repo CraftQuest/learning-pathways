@@ -110,6 +110,25 @@ class LearningPathwaysService extends Component
         return $result;
     }
 
+    public function getUserPathwaysAsEntries($userId)
+    {
+        $pathways = (new Query())
+            ->select(['entryId'])
+            ->from(['{{%learningpathways_learningpathwaysrecord}}'])
+            ->where(['userId' => craft::$app->user->getId(), 'status' => 0])
+            ->all();
+
+        $entryIds = [];
+
+        foreach ($pathways as $pathway) {
+            $entryIds[] = $pathway['entryId'];
+        }
+
+        $entries = implode(", ", $entryIds);
+
+        return Entry::find()->section('quests')->id($entryIds)->all();
+    }
+
     /**
      * @param $pathwayEntryId
      * @return bool

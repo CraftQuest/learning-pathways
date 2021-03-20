@@ -60,6 +60,11 @@ class LearningPathwaysVariable
         return $result;
     }
 
+    public function pathwayEntries($userId)
+    {
+        return LearningPathways::$plugin->learningPathwaysService->getUserPathwaysAsEntries($userId);
+    }
+
     /**
      * @param $pathwayEntryId
      * @return bool
