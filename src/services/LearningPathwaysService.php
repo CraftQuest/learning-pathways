@@ -126,7 +126,7 @@ class LearningPathwaysService extends Component
 
         $entries = implode(", ", $entryIds);
 
-        return Entry::find()->section('quests')->id($entryIds)->all();
+        return Entry::find()->section('learningPathways')->id($entryIds)->all();
     }
 
     /**
