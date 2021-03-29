@@ -180,6 +180,19 @@ class LearningPathwaysService extends Component
         return false;
     }
 
+
+    /**
+     * @param $userId
+     * @return int
+     */
+    public function getCompletedPathwayCount($userId): int
+    {
+        return (new Query())
+            ->from(['{{%learningpathways_learningpathwaysrecord}}'])
+            ->where(['userId' => $userId, 'status' => 1])
+            ->count();
+    }
+
     /**
      * @param $pathwayEntryId
      * @return mixed

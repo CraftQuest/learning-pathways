@@ -47,8 +47,7 @@ class LearningPathwaysVariable
      */
     public function hasEnrollment()
     {
-        $result = LearningPathways::$plugin->learningPathwaysService->hasEnrollment();
-        return $result;
+        return LearningPathways::$plugin->learningPathwaysService->hasEnrollment();
     }
 
     /**
@@ -56,10 +55,13 @@ class LearningPathwaysVariable
      */
     public function getUserPathways()
     {
-        $result = LearningPathways::$plugin->learningPathwaysService->getUserPathways();
-        return $result;
+        return LearningPathways::$plugin->learningPathwaysService->getUserPathways();
     }
 
+    /**
+     * @param $userId
+     * @return array|\craft\base\ElementInterface[]|\craft\elements\Entry[]|null
+     */
     public function pathwayEntries($userId)
     {
         return LearningPathways::$plugin->learningPathwaysService->getUserPathwaysAsEntries($userId);
@@ -71,9 +73,15 @@ class LearningPathwaysVariable
      */
     public function isPathwayComplete($pathwayEntryId)
     {
-        $result = LearningPathways::$plugin->learningPathwaysService->isPathwayComplete($pathwayEntryId);
-
-        return $result;
+       return LearningPathways::$plugin->learningPathwaysService->isPathwayComplete($pathwayEntryId);
+    }
+    
+    /**
+     * @param $userId
+     */
+    public function getCompletedPathwaysCount($userId)
+    {
+        return LearningPathways::$plugin->learningPathwaysService->getCompletedPathwayCount($userId);
     }
 
 }
