@@ -115,7 +115,7 @@ class LearningPathwaysService extends Component
         $pathways = (new Query())
             ->select(['entryId'])
             ->from(['{{%learningpathways_learningpathwaysrecord}}'])
-            ->where(['userId' => craft::$app->user->getId(), 'status' => 0])
+            ->where(['userId' => $userId, 'status' => 0])
             ->all();
 
         $entryIds = [];
@@ -190,6 +190,14 @@ class LearningPathwaysService extends Component
         return (new Query())
             ->from(['{{%learningpathways_learningpathwaysrecord}}'])
             ->where(['userId' => $userId, 'status' => 1])
+            ->count();
+    }
+
+    public function getInProgressPathwayCount($userId)
+    {
+        return (new Query())
+            ->from(['{{%learningpathways_learningpathwaysrecord}}'])
+            ->where(['userId' => $userId, 'status' => 0])
             ->count();
     }
 
