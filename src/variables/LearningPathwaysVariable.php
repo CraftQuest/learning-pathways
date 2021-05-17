@@ -84,4 +84,9 @@ class LearningPathwaysVariable
         return LearningPathways::$plugin->learningPathwaysService->getCompletedPathwayCount($userId);
     }
 
+    public function getInProgressPathwayCount($userId)
+    {
+        return LearningPathways::$plugin->learningPathwaysService->getInProgressPathwayCount($userId);
+    }
+
 }
