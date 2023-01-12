@@ -1,6 +1,6 @@
 <?php
 /**
- * Learning Pathways plugin for Craft CMS 3.x
+ * Learning Pathways plugin for Craft CMS 4.x
  *
  * Tracks the learning pathways of students.
  *
@@ -60,7 +60,7 @@ class LearningPathways extends Plugin
      *
      * @var string
      */
-    public string $schemaVersion = '0.0.1';
+    public string $schemaVersion = '2.0.0';
 
     // Public Methods
     // =========================================================================
