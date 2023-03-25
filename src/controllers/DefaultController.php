@@ -46,7 +46,7 @@ class DefaultController extends Controller
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    protected $allowAnonymous = ['index', 'save', 'delete'];
+    protected bool|array|int $allowAnonymous = ['index', 'save', 'delete'];
 
     // Public Methods
     // =========================================================================
