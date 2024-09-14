@@ -2,7 +2,7 @@
     "name": "mijingo/learning-pathways",
     "description": "Tracks the learning pathways of students.",
     "type": "craft-plugin",
-    "version": "2.0.1",
+    "version": "5.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -11,8 +11,8 @@
         "learning pathways"
     ],
     "support": {
-        "docs": "???",
-        "issues": "???"
+        "docs": "https://github.com/CraftQuest/learning-pathways/blob/master/README.md",
+        "issues": "https://github.com/CraftQuest/learning-pathways/issues"
     },
     "license": "MIT",
     "authors": [
@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^4.0.0"
+        "craftcms/cms": "^5.0.0"
     },
     "autoload": {
         "psr-4": {
