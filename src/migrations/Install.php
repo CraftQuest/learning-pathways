@@ -1,6 +1,6 @@
 <?php
 /**
- * Learning Pathways plugin for Craft CMS 3.x
+ * Learning Pathways plugin for Craft CMS 5.x
  *
  * Tracks the learning pathways of students.
  *
@@ -57,9 +57,7 @@ class Install extends Migration
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         if ($this->createTables()) {
-            $this->createIndexes();
             $this->addForeignKeys();
-            // Refresh the db schema caches
             Craft::$app->db->schema->refresh();
             $this->insertDefaultData();
         }
@@ -118,33 +116,6 @@ class Install extends Migration
         }
 
         return $tablesCreated;
-    }
-
-    /**
-     * Creates the indexes needed for the Records used by the plugin
-     *
-     * @return void
-     */
-    protected function createIndexes()
-    {
-    // learningpathways_learningpathwaysrecord table
-        $this->createIndex(
-            $this->db->getIndexName(
-                '{{%learningpathways_learningpathwaysrecord}}',
-                'some_field',
-                true
-            ),
-            '{{%learningpathways_learningpathwaysrecord}}',
-            'some_field',
-            true
-        );
-        // Additional commands depending on the db driver
-        switch ($this->driver) {
-            case DbConfig::DRIVER_MYSQL:
-                break;
-            case DbConfig::DRIVER_PGSQL:
-                break;
-        }
     }
 
     /**
