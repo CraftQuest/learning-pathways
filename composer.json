@@ -2,7 +2,7 @@
     "name": "mijingo/learning-pathways",
     "description": "Tracks the learning pathways of students.",
     "type": "craft-plugin",
-    "version": "5.0.0",
+    "version": "dev-develop-v5",
     "keywords": [
         "craft",
         "cms",
