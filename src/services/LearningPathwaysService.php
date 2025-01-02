@@ -239,7 +239,7 @@ class LearningPathwaysService extends Component
      */
     private function _getCourseVideos($entryId)
     {
-        $videos = MatrixBlock::find()
+        $videos = Entry::find()
             ->ownerId($entryId)
             ->all();
         return $videos;
